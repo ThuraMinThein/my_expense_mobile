@@ -14,10 +14,6 @@ final themeProvider = StateProvider<bool>((ref) {
   return false; // false for light, true for dark
 });
 
-final userProvider = StateProvider<UserData?>((ref) {
-  return null;
-});
-
 class UserData {
   final String id;
   final String name;

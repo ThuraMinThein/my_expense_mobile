@@ -180,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        context.go('/home');
+                        context.go('/signup');
                       },
                       child: const Text('Sign Up'),
                     ),

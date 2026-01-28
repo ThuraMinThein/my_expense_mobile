@@ -79,10 +79,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
         // Map response to UserData
         final user = UserData(
-          id: userData['id'].toString(),
+          id: userData['ID'].toString(),
           name: userData['username'],
           email: userData['email'],
-          photoUrl: userData['picture'],
+          photoUrl: userData['profile'],
         );
 
         state = state.copyWith(status: AuthStatus.authenticated, user: user);
@@ -113,10 +113,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
         final user = UserData(
-          id: userData['id'].toString(),
+          id: userData['ID'].toString(),
           name: userData['username'],
           email: userData['email'],
-          photoUrl: userData['picture'],
+          photoUrl: userData['profile'],
         );
         state = state.copyWith(status: AuthStatus.authenticated, user: user);
       } else {
@@ -151,10 +151,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
         final user = UserData(
-          id: userData['id'].toString(),
+          id: userData['ID'].toString(),
           name: userData['username'],
           email: userData['email'],
-          photoUrl: userData['picture'],
+          photoUrl: userData['profile'],
         );
         state = state.copyWith(status: AuthStatus.authenticated, user: user);
       }

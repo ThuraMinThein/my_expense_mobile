@@ -1,19 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:my_expense_mobile/features/auth/providers/auth_provider.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/signup_screen.dart';
 import '../features/expense/screens/add_expense_screen.dart';
 import '../features/expense/screens/expense_history_screen.dart';
 import '../features/analytics/screens/analytics_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
-import '../core/providers/app_providers.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final user = ref.watch(userProvider);
+  final authState = ref.watch(authProvider);
 
   return GoRouter(
-    initialLocation: user == null ? '/login' : '/home',
+    initialLocation: authState.status == AuthStatus.authenticated
+        ? '/login'
+        : '/home',
     routes: [
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
@@ -45,8 +47,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
     redirect: (context, state) {
-      final user = ref.read(userProvider);
-      final isAuthenticated = user != null;
+      final authState = ref.read(authProvider);
+      final isAuthenticated = authState.status == AuthStatus.authenticated;
       final currentPath = state.uri.path;
 
       if (!isAuthenticated) {

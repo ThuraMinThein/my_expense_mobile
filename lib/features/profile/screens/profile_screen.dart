@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_expense_mobile/features/auth/providers/auth_provider.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/common_widgets.dart';
@@ -14,7 +15,7 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(authProvider).user;
     final currency = ref.watch(currencyProvider);
     final isDarkMode = ref.watch(themeProvider);
     final summaryAsync = ref.watch(expenseSummaryProvider);
@@ -274,8 +275,8 @@ class ProfileScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              ref.read(userProvider.notifier).state = null;
-              context.go('/welcome');
+              ref.read(authProvider.notifier).logout();
+              context.go('/login');
             },
             child: const Text('Logout'),
           ),
