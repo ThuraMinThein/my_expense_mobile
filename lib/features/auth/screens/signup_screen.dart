@@ -184,8 +184,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    hintText: 'Enter your full name',
+                    labelText: 'User Name',
+                    hintText: 'Enter your user name',
                     prefixIcon: Icon(Icons.person_outlined),
                   ),
                   validator: _validateName,
