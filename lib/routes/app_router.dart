@@ -54,11 +54,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             currentPath.startsWith('/history') ||
             currentPath.startsWith('/analytics') ||
             currentPath.startsWith('/profile')) {
-          return '/welcome';
+          return '/login';
         }
       }
 
-      if (isAuthenticated && currentPath == '/welcome') {
+      if (isAuthenticated && currentPath == '/login') {
         return '/home';
       }
 
