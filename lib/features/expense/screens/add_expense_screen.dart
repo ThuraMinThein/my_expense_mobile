@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/common_widgets.dart';
 import '../../../core/utils/app_utils.dart';
 import '../../../core/providers/app_providers.dart';
 import '../models/expense.dart';
@@ -55,7 +54,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                     children: [
                       // Amount Display
                       _buildAmountDisplay(context),
-                      
+
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -83,19 +82,29 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                                 hintText: 'What is this for?',
                                 prefixIcon: Container(
                                   padding: const EdgeInsets.all(12),
-                                  child: const Icon(Icons.edit_note_rounded, color: AppColors.primary),
+                                  child: const Icon(
+                                    Icons.edit_note_rounded,
+                                    color: AppColors.primary,
+                                  ),
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(color: AppColors.border),
+                                  borderSide: BorderSide(
+                                    color: AppColors.border,
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(color: AppColors.border),
+                                  borderSide: BorderSide(
+                                    color: AppColors.border,
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.primary,
+                                    width: 2,
+                                  ),
                                 ),
                                 filled: true,
                                 fillColor: AppColors.surface,
@@ -113,21 +122,27 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                             // Category Selection
                             Text(
                               'Category',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 12),
                             SizedBox(
                               height: 100, // Fixed height for horizontal scroll
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: AppConstants.expenseCategories.length,
-                                separatorBuilder: (context, index) => const SizedBox(width: 12),
+                                itemCount:
+                                    AppConstants.expenseCategories.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(width: 12),
                                 itemBuilder: (context, index) {
-                                  final category = AppConstants.expenseCategories[index];
-                                  final isSelected = _selectedCategory == category;
-                                  return _buildCategoryItem(category, isSelected);
+                                  final category =
+                                      AppConstants.expenseCategories[index];
+                                  final isSelected =
+                                      _selectedCategory == category;
+                                  return _buildCategoryItem(
+                                    category,
+                                    isSelected,
+                                  );
                                 },
                               ),
                             ),
@@ -142,19 +157,32 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                                     onTap: _selectDate,
                                     borderRadius: BorderRadius.circular(16),
                                     child: Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 16,
+                                      ),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.border),
+                                        border: Border.all(
+                                          color: AppColors.border,
+                                        ),
                                         borderRadius: BorderRadius.circular(16),
                                         color: AppColors.surface,
                                       ),
                                       child: Row(
                                         children: [
-                                          const Icon(Icons.calendar_today_rounded, size: 20, color: AppColors.textSecondary),
+                                          const Icon(
+                                            Icons.calendar_today_rounded,
+                                            size: 20,
+                                            color: AppColors.textSecondary,
+                                          ),
                                           const SizedBox(width: 8),
                                           Text(
-                                            DateFormat('MMM d, y').format(_selectedDate),
-                                            style: const TextStyle(fontWeight: FontWeight.w500),
+                                            DateFormat(
+                                              'MMM d, y',
+                                            ).format(_selectedDate),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -163,9 +191,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                                 ),
                               ],
                             ),
-                            
+
                             const SizedBox(height: 16),
-                            
+
                             TextFormField(
                               controller: _noteController,
                               maxLines: 2,
@@ -173,12 +201,19 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                                 labelText: 'Note (Optional)',
                                 alignLabelWithHint: true,
                                 prefixIcon: const Padding(
-                                  padding: EdgeInsets.only(bottom: 24), // Center icon for multi-line
-                                  child: Icon(Icons.sticky_note_2_outlined, color: AppColors.textSecondary),
+                                  padding: EdgeInsets.only(
+                                    bottom: 24,
+                                  ), // Center icon for multi-line
+                                  child: Icon(
+                                    Icons.sticky_note_2_outlined,
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(color: AppColors.border),
+                                  borderSide: BorderSide(
+                                    color: AppColors.border,
+                                  ),
                                 ),
                                 filled: true,
                                 fillColor: AppColors.surface,
@@ -203,13 +238,19 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                                 ),
                                 child: _isLoading
                                     ? const SizedBox(
-                                        width: 24, 
-                                        height: 24, 
-                                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5)
+                                        width: 24,
+                                        height: 24,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2.5,
+                                        ),
                                       )
                                     : const Text(
                                         'Save Expense',
-                                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                               ),
                             ),
@@ -222,14 +263,14 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 ),
               ),
             ),
-            // Custom Numeric Keypad could be here, but using system keyboard for Name/Note 
+            // Custom Numeric Keypad could be here, but using system keyboard for Name/Note
             // and a modal bottom sheet or dedicated widget for Amount is better.
             // For now, I'll integrate the keypad directly into the top part if user taps amount.
-            // But to simplify and follow modern patterns, let's keep the keypad always visible 
-            // ONLY if strictly needed, or use a specialized input. 
-            // Given existing code had a custom keypad, let's preserve that "Calculator" feel 
+            // But to simplify and follow modern patterns, let's keep the keypad always visible
+            // ONLY if strictly needed, or use a specialized input.
+            // Given existing code had a custom keypad, let's preserve that "Calculator" feel
             // by making the Amount clickable to show/hide keypad or just show it when Amount is focused.
-            // FOR SIMPLICITY/UX: I'll make the Amount text tapable to open a bottom sheet keypad 
+            // FOR SIMPLICITY/UX: I'll make the Amount text tapable to open a bottom sheet keypad
             // OR just keep the custom keypad as a sticky bottom widget IF specific fields aren't focused.
             // However, managing focus between TextFields and custom Keypad is tricky.
             // Let's use a standard implementation: Tap amount -> Open Keypad Modal.
@@ -242,7 +283,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   Widget _buildAmountDisplay(BuildContext context) {
     // Determine currency symbol
     final currency = ref.watch(currencyProvider);
-    
+
     return GestureDetector(
       onTap: () {
         // Show keypad bottom sheet
@@ -287,7 +328,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  AppUtils.formatAmount(double.tryParse(_amount) ?? 0.0).replaceAll(currency, '').trim(),
+                  AppUtils.formatAmount(
+                    double.tryParse(_amount) ?? 0.0,
+                  ).replaceAll(currency, '').trim(),
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.bold,
@@ -327,7 +370,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                         color: AppColors.primary.withOpacity(0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
-                      )
+                      ),
                     ]
                   : [],
             ),
@@ -354,14 +397,22 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   IconData _getCategoryIcon(String category) {
     // Helper to map category names to icons
     switch (category) {
-      case 'Food': return Icons.restaurant_rounded;
-      case 'Transport': return Icons.directions_car_rounded;
-      case 'Shopping': return Icons.shopping_bag_rounded;
-      case 'Entertainment': return Icons.movie_rounded;
-      case 'Health': return Icons.medical_services_rounded;
-      case 'Education': return Icons.school_rounded;
-      case 'Bills': return Icons.receipt_long_rounded;
-      default: return Icons.category_rounded;
+      case 'Food':
+        return Icons.restaurant_rounded;
+      case 'Transport':
+        return Icons.directions_car_rounded;
+      case 'Shopping':
+        return Icons.shopping_bag_rounded;
+      case 'Entertainment':
+        return Icons.movie_rounded;
+      case 'Health':
+        return Icons.medical_services_rounded;
+      case 'Education':
+        return Icons.school_rounded;
+      case 'Bills':
+        return Icons.receipt_long_rounded;
+      default:
+        return Icons.category_rounded;
     }
   }
 
@@ -410,7 +461,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     if (row == 0) return [1, 2, 3][col];
     if (row == 1) return [4, 5, 6][col];
     if (row == 2) return [7, 8, 9][col];
-    if (row == 3) return col == 2 ? Icons.backspace_outlined : (col == 1 ? 0 : '.');
+    if (row == 3)
+      return col == 2 ? Icons.backspace_outlined : (col == 1 ? 0 : '.');
     return '';
   }
 
@@ -488,9 +540,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
 
     try {
       final expense = Expense(
-        id: '', // Server generates ID usually, but if needed locally we can generate. 
-                // However, model might expect empty for new. 
-                // Let's use empty string as signal for new, or current timestamp if local.
+        id: '', // Server generates ID usually, but if needed locally we can generate.
+        // However, model might expect empty for new.
+        // Let's use empty string as signal for new, or current timestamp if local.
         name: _nameController.text.trim(),
         amount: amount,
         category: _selectedCategory,

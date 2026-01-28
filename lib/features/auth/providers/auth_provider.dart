@@ -49,18 +49,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> _checkAuthStatus() async {
     final token = _prefs.getString('auth_token');
-    final userJson = _prefs.getString('user_data');
 
     if (token != null && token.isNotEmpty) {
       _apiService.setAuthToken(token);
       // Ideally verify token validity with backend here
-      if (userJson != null) {
-        // Parse user data - simplifying for now as we don't have a fromJson yet
-        // In a real app, you'd parse the JSON or fetch profile
-        state = state.copyWith(status: AuthStatus.authenticated);
-      } else {
-        state = state.copyWith(status: AuthStatus.authenticated);
-      }
+      state = state.copyWith(status: AuthStatus.authenticated);
     } else {
       state = state.copyWith(status: AuthStatus.unauthenticated);
     }

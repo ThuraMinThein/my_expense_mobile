@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
-import '../features/auth/screens/welcome_screen.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/signup_screen.dart';
 import '../features/expense/screens/add_expense_screen.dart';
@@ -14,12 +13,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   final user = ref.watch(userProvider);
 
   return GoRouter(
-    initialLocation: user == null ? '/welcome' : '/home',
+    initialLocation: user == null ? '/login' : '/home',
     routes: [
-      GoRoute(
-        path: '/welcome',
-        builder: (context, state) => const WelcomeScreen(),
-      ),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
         path: '/signup',
