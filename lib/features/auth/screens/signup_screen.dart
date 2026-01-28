@@ -33,15 +33,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     super.dispose();
   }
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your email';
-    }
-    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-      return 'Please enter a valid email';
-    }
-    return null;
-  }
+  // String? _validateEmail(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return 'Please enter your email';
+  //   }
+  //   if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+  //     return 'Please enter a valid email';
+  //   }
+  //   return null;
+  // }
 
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
@@ -195,19 +195,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 const SizedBox(height: 16),
 
                 // Email field
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter your email',
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                  validator: _validateEmail,
-                  textInputAction: TextInputAction.next,
-                ),
+                // TextFormField(
+                //   controller: _emailController,
+                //   keyboardType: TextInputType.emailAddress,
+                //   decoration: const InputDecoration(
+                //     labelText: 'Email',
+                //     hintText: 'Enter your email',
+                //     prefixIcon: Icon(Icons.email_outlined),
+                //   ),
+                //   validator: _validateEmail,
+                //   textInputAction: TextInputAction.next,
+                // ),
 
-                const SizedBox(height: 16),
+                // const SizedBox(height: 16),
 
                 // Password field
                 TextFormField(

@@ -9,23 +9,23 @@ enum AuthStatus { initial, authenticated, unauthenticated, loading, error }
 
 class AuthState {
   final AuthStatus status;
-  final String? token;
+  final UserData? user;
   final String? errorMessage;
 
   const AuthState({
     this.status = AuthStatus.initial,
-    this.token,
+    this.user,
     this.errorMessage,
   });
 
   AuthState copyWith({
     AuthStatus? status,
-    String? token,
+    UserData? user,
     String? errorMessage,
   }) {
     return AuthState(
       status: status ?? this.status,
-      token: token ?? this.token,
+      user: user ?? this.user,
       errorMessage: errorMessage,
     );
   }
@@ -49,11 +49,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> _checkAuthStatus() async {
     final token = _prefs.getString('auth_token');
+    final userJson = _prefs.getString('user_data');
 
     if (token != null && token.isNotEmpty) {
       _apiService.setAuthToken(token);
       // Ideally verify token validity with backend here
-      state = state.copyWith(status: AuthStatus.authenticated);
+      if (userJson != null) {
+        // Parse user data - simplifying for now as we don't have a fromJson yet
+        // In a real app, you'd parse the JSON or fetch profile
+        state = state.copyWith(status: AuthStatus.authenticated);
+      } else {
+        state = state.copyWith(status: AuthStatus.authenticated);
+      }
     } else {
       state = state.copyWith(status: AuthStatus.unauthenticated);
     }
@@ -64,14 +71,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final response = await _apiService.login(userName, password);
       final token = response['access_token'];
+      final userData = response['user'];
 
       if (token != null) {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
 
         // Map response to UserData
+        final user = UserData(
+          id: userData['id'].toString(),
+          name: userData['username'],
+          email: userData['email'],
+          photoUrl: userData['picture'],
+        );
 
-        state = state.copyWith(status: AuthStatus.authenticated, token: token);
+        state = state.copyWith(status: AuthStatus.authenticated, user: user);
       } else {
         state = state.copyWith(
           status: AuthStatus.error,
@@ -93,11 +107,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Assuming register returns same as login or success message
       // If it auto-logins:
       final token = response['access_token'];
+      final userData = response['user'];
 
       if (token != null) {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
-        state = state.copyWith(status: AuthStatus.authenticated, token: token);
+        final user = UserData(
+          id: userData['id'].toString(),
+          name: userData['username'],
+          email: userData['email'],
+          photoUrl: userData['picture'],
+        );
+        state = state.copyWith(status: AuthStatus.authenticated, user: user);
       } else {
         // If registration requires login afterwards
         state = state.copyWith(status: AuthStatus.unauthenticated);
@@ -124,10 +145,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // 2. Send ID Token to Backend
       final response = await _apiService.signInWithGoogle(idToken);
       final token = response['access_token'];
+      final userData = response['user'];
+
       if (token != null) {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
-        state = state.copyWith(status: AuthStatus.authenticated, token: token);
+        final user = UserData(
+          id: userData['id'].toString(),
+          name: userData['username'],
+          email: userData['email'],
+          photoUrl: userData['picture'],
+        );
+        state = state.copyWith(status: AuthStatus.authenticated, user: user);
       }
     } catch (e) {
       state = state.copyWith(
@@ -140,8 +169,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> logout() async {
     await _googleAuthService.signOut();
     await _prefs.remove('auth_token');
+    await _prefs.remove('user_data');
     _apiService.clearAuthToken();
-    state = state.copyWith(status: AuthStatus.unauthenticated, token: null);
+    state = state.copyWith(status: AuthStatus.unauthenticated, user: null);
   }
 }
 

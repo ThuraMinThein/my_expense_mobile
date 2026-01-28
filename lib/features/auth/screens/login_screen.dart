@@ -32,12 +32,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/welcome'),
-        ),
-      ),
       body: SafeArea(
         child: Padding(
           padding: AppConstants.defaultPadding,
@@ -50,7 +44,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // Welcome message
                 Text(
-                  'Welcome back 👋',
+                  'Welcome back',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
 
@@ -186,7 +180,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        // TODO: Navigate to sign up screen
+                        context.go('/home');
                       },
                       child: const Text('Sign Up'),
                     ),
