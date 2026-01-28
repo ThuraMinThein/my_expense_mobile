@@ -24,7 +24,7 @@ class ApiConstants {
     // Production API URL - replace with your actual production backend URL
     // You can also use environment variables or different strategies:
     // 1. Fixed production URL:
-    return 'https://api.myexpense.app'; // Update this with your production URL
+    return 'https://myexpensebackend-thuracreatingacc1247-ig7xwf2a.leapcell.dev'; // Update this with your production URL
 
     // 2. Alternative: Try common production URLs as fallback
     // return _tryProductionUrls();
@@ -34,10 +34,10 @@ class ApiConstants {
   }
 
   static List<String> get productionUrlFallbacks => [
-    'https://api.myexpense.app',
-    'https://myexpense-api.herokuapp.com',
-    'https://api.myexpense.herokuapp.com',
-    'https://my-expense-api.onrender.com',
+    'https://myexpensebackend-thuracreatingacc1247-ig7xwf2a.leapcell.dev',
+    // 'https://myexpense-api.herokuapp.com',
+    // 'https://api.myexpense.herokuapp.com',
+    // 'https://my-expense-api.onrender.com',
   ];
 
   // Auth Endpoints

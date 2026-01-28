@@ -9,23 +9,23 @@ enum AuthStatus { initial, authenticated, unauthenticated, loading, error }
 
 class AuthState {
   final AuthStatus status;
-  final UserData? user;
+  final String? token;
   final String? errorMessage;
 
   const AuthState({
     this.status = AuthStatus.initial,
-    this.user,
+    this.token,
     this.errorMessage,
   });
 
   AuthState copyWith({
     AuthStatus? status,
-    UserData? user,
+    String? token,
     String? errorMessage,
   }) {
     return AuthState(
       status: status ?? this.status,
-      user: user ?? this.user,
+      token: token ?? this.token,
       errorMessage: errorMessage,
     );
   }
@@ -40,10 +40,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     required AuthService googleAuthService,
     required ApiService apiService,
     required SharedPreferences prefs,
-  })  : _googleAuthService = googleAuthService,
-        _apiService = apiService,
-        _prefs = prefs,
-        super(const AuthState()) {
+  }) : _googleAuthService = googleAuthService,
+       _apiService = apiService,
+       _prefs = prefs,
+       super(const AuthState()) {
     _checkAuthStatus();
   }
 
@@ -59,38 +59,31 @@ class AuthNotifier extends StateNotifier<AuthState> {
         // In a real app, you'd parse the JSON or fetch profile
         state = state.copyWith(status: AuthStatus.authenticated);
       } else {
-         state = state.copyWith(status: AuthStatus.authenticated);
+        state = state.copyWith(status: AuthStatus.authenticated);
       }
     } else {
       state = state.copyWith(status: AuthStatus.unauthenticated);
     }
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String userName, String password) async {
     state = state.copyWith(status: AuthStatus.loading);
     try {
-      final response = await _apiService.login(email, password);
-      final token = response['token'];
-      final userData = response['user'];
+      final response = await _apiService.login(userName, password);
+      final token = response['access_token'];
 
       if (token != null) {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
-        
-        // Map response to UserData
-        final user = UserData(
-            id: userData['id'].toString(),
-            name: userData['name'],
-            email: userData['email'],
-            photoUrl: userData['picture']
-        );
 
-        state = state.copyWith(
-          status: AuthStatus.authenticated,
-          user: user,
-        );
+        // Map response to UserData
+
+        state = state.copyWith(status: AuthStatus.authenticated, token: token);
       } else {
-         state = state.copyWith(status: AuthStatus.error, errorMessage: "Invalid response from server");
+        state = state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: "Invalid response from server",
+        );
       }
     } catch (e) {
       state = state.copyWith(
@@ -100,31 +93,21 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<void> register(String name, String email, String password) async {
-     state = state.copyWith(status: AuthStatus.loading);
+  Future<void> register(String userName, String email, String password) async {
+    state = state.copyWith(status: AuthStatus.loading);
     try {
-      final response = await _apiService.register(name, email, password);
+      final response = await _apiService.register(userName, email, password);
       // Assuming register returns same as login or success message
       // If it auto-logins:
-       final token = response['token'];
-      final userData = response['user'];
+      final token = response['access_token'];
 
       if (token != null) {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
-         final user = UserData(
-            id: userData['id'].toString(),
-            name: userData['name'],
-            email: userData['email'],
-            photoUrl: userData['picture']
-        );
-        state = state.copyWith(
-          status: AuthStatus.authenticated,
-          user: user,
-        );
+        state = state.copyWith(status: AuthStatus.authenticated, token: token);
       } else {
-          // If registration requires login afterwards
-           state = state.copyWith(status: AuthStatus.unauthenticated);
+        // If registration requires login afterwards
+        state = state.copyWith(status: AuthStatus.unauthenticated);
       }
     } catch (e) {
       state = state.copyWith(
@@ -147,22 +130,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       // 2. Send ID Token to Backend
       final response = await _apiService.signInWithGoogle(idToken);
-       final token = response['token'];
-      final userData = response['user'];
-
-       if (token != null) {
+      final token = response['access_token'];
+      if (token != null) {
         await _prefs.setString('auth_token', token);
         _apiService.setAuthToken(token);
-         final user = UserData(
-            id: userData['id'].toString(),
-            name: userData['name'],
-            email: userData['email'],
-            photoUrl: userData['picture']
-        );
-        state = state.copyWith(
-          status: AuthStatus.authenticated,
-           user: user,
-        );
+        state = state.copyWith(status: AuthStatus.authenticated, token: token);
       }
     } catch (e) {
       state = state.copyWith(
@@ -175,20 +147,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> logout() async {
     await _googleAuthService.signOut();
     await _prefs.remove('auth_token');
-    await _prefs.remove('user_data');
     _apiService.clearAuthToken();
-    state = state.copyWith(status: AuthStatus.unauthenticated, user: null);
+    state = state.copyWith(status: AuthStatus.unauthenticated, token: null);
   }
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final googleAuthService = AuthService();
   final apiService = ref.watch(apiServiceProvider);
-  // We need to ensure SharedPreferences is initialized. 
+  // We need to ensure SharedPreferences is initialized.
   // Ideally, use a provider that returns Future<SharedPreferences> or initialized in main.
   // For now, assuming preferencesProvider provides an instance if we override it in main.dart
   final prefs = ref.watch(preferencesProvider);
-  
+
   return AuthNotifier(
     googleAuthService: googleAuthService,
     apiService: apiService,
