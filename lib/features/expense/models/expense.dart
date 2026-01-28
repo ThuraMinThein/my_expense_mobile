@@ -19,29 +19,42 @@ class Expense {
     required this.currency,
   });
 
+  // factory Expense.fromJson(Map<String, dynamic> json) {
+  //   return Expense(
+  //     id: json['id'] as String,
+  //     name: json['name'] as String? ?? 'Expense',
+  //     amount: double.tryParse(json['amount'].toString()) ?? 0.0,
+  //     category: json['category'] as String,
+  //     note: json['note'] as String? ?? '',
+  //     createdAt: DateTime.parse(json['created_at'] as String),
+  //     date: DateTime.parse(json['expense_date'] as String),
+  //     currency: json['currency'] as String? ?? 'USD',
+  //   );
+  // }
+
   factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
-      id: json['id'] as String,
-      name: json['name'] as String? ?? 'Expense',
-      amount: double.tryParse(json['amount'].toString()) ?? 0.0,
-      category: json['category'] as String,
-      note: json['note'] as String? ?? '',
-      createdAt: DateTime.parse(json['created_at'] as String),
-      date: DateTime.parse(json['expense_date'] as String),
-      currency: json['currency'] as String? ?? 'USD',
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      amount: double.parse(json['amount'].toString()),
+      category: json['category'],
+      note: json['note'] ?? '',
+      createdAt: DateTime.parse(json['created_at']),
+      date: DateTime.parse(json['expense_date']),
+      currency: 'MMK',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      // 'id': id,
       'name': name,
-      'amount': amount,
+      'amount': amount.round(),
       'category': category,
       'note': note,
-      'created_at': createdAt.toIso8601String(),
-      'expense_date': date.toIso8601String(),
-      'currency': currency,
+      // 'created_at': createdAt.toIso8601String(),
+      // 'expense_date': date.toIso8601String(),
+      // 'currency': currency,
     };
   }
 

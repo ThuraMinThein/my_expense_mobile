@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/providers/app_providers.dart';
@@ -49,17 +51,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> _checkAuthStatus() async {
     final token = _prefs.getString('auth_token');
-    final userJson = _prefs.getString('user_data');
 
     if (token != null && token.isNotEmpty) {
       _apiService.setAuthToken(token);
-      // Ideally verify token validity with backend here
-      if (userJson != null) {
-        // Parse user data - simplifying for now as we don't have a fromJson yet
-        // In a real app, you'd parse the JSON or fetch profile
-        state = state.copyWith(status: AuthStatus.authenticated);
-      } else {
-        state = state.copyWith(status: AuthStatus.authenticated);
+
+      try {
+        final userJson = await _apiService.getCurrentUser();
+        final userData = UserData.fromJson(userJson);
+
+        state = state.copyWith(
+          status: AuthStatus.authenticated,
+          user: userData, // now types match!
+        );
+      } catch (e) {
+        state = state.copyWith(status: AuthStatus.unauthenticated);
       }
     } else {
       state = state.copyWith(status: AuthStatus.unauthenticated);

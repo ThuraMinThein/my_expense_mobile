@@ -27,7 +27,7 @@ class AppColors {
     Color(0xFF66BB6A), // Entertainment - Green
     Color(0xFFEC407A), // Health - Pink
     Color(0xFFFFA726), // Education - Amber
-    Color(0xFF8D6E63), // Other - Brown
     Color(0xFF78909C), // Bills - Blue Grey
+    Color(0xFF8D6E63), // Other - Brown
   ];
 }

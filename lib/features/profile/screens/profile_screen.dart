@@ -15,7 +15,8 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authProvider).user;
+    final authState = ref.watch(authProvider);
+    final user = authState.user;
     final currency = ref.watch(currencyProvider);
     final isDarkMode = ref.watch(themeProvider);
     final summaryAsync = ref.watch(expenseSummaryProvider);

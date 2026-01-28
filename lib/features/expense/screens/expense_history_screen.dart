@@ -86,7 +86,9 @@ class _ExpenseHistoryScreenState extends ConsumerState<ExpenseHistoryScreen>
     final categoryIndex = AppConstants.expenseCategories.indexOf(
       expense.category,
     );
-    final categoryColor = AppColors.categoryColors[categoryIndex];
+    final categoryColor = (categoryIndex >= 0)
+        ? AppColors.categoryColors[categoryIndex]
+        : AppColors.categoryColors[7]; // fallback color
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 12),

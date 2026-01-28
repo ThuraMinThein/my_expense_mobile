@@ -36,13 +36,6 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Add Expense'),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: AppColors.background,
-        foregroundColor: AppColors.textPrimary,
-      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -561,7 +554,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
             backgroundColor: AppColors.success,
           ),
         );
-        context.pop(); // Go back to previous screen
+        context.go("/history"); // Go back to previous screen
       }
     } catch (e) {
       if (mounted) {

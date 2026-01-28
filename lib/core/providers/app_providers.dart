@@ -7,7 +7,7 @@ final preferencesProvider = Provider<SharedPreferences>((ref) {
 });
 
 final currencyProvider = StateProvider<String>((ref) {
-  return 'USD';
+  return 'MMK';
 });
 
 final themeProvider = StateProvider<bool>((ref) {
@@ -38,6 +38,14 @@ class UserData {
       name: name ?? this.name,
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
+    );
+  }
+
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
+      id: json['id'].toString(),
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
     );
   }
 }

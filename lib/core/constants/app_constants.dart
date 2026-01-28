@@ -11,11 +11,12 @@ class AppConstants {
     'Entertainment',
     'Health',
     'Education',
-    'Other',
     'Bills',
+    'Other',
   ];
 
   static const List<String> currencies = [
+    'MMK',
     'USD',
     'EUR',
     'GBP',
@@ -24,7 +25,6 @@ class AppConstants {
     'INR',
     'AUD',
     'CAD',
-    'MMK',
   ];
 
   static const String defaultCurrency = 'USD';

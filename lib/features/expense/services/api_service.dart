@@ -4,6 +4,7 @@ import '../../../core/utils/environment.dart';
 
 class ApiService {
   final Dio _dio;
+  String? _token;
 
   ApiService() : _dio = Dio() {
     _dio.options = BaseOptions(
@@ -38,6 +39,15 @@ class ApiService {
         '/auth/login',
         data: {'userName': userName, 'password': password},
       );
+      return response.data;
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getCurrentUser() async {
+    try {
+      final response = await _dio.get('/users/me');
       return response.data;
     } on DioException catch (e) {
       throw _handleDioError(e);
