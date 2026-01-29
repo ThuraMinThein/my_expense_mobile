@@ -18,7 +18,16 @@ class AppUtils {
   }
 
   static String _compact(double value) {
-    return value.toStringAsFixed(1).replaceAll('.0', '');
+    if (value >= 100) {
+      return value.toStringAsFixed(0); // 125K
+    } else if (value >= 10) {
+      return value.toStringAsFixed(1).replaceAll('.0', ''); // 12.5K
+    } else {
+      return value
+          .toStringAsFixed(2)
+          .replaceAll('.00', '')
+          .replaceAll('.0', '');
+    }
   }
 
   static String formatDateTime(
