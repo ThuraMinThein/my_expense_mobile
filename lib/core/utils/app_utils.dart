@@ -1,12 +1,24 @@
 import 'package:intl/intl.dart';
 
 class AppUtils {
-  static String formatAmount(double amount, {String currency = 'USD'}) {
-    final format = NumberFormat.currency(
-      symbol: _getCurrencySymbol(currency),
-      decimalDigits: 2,
-    );
+  static String formatAmount(double amount, String currency) {
+    final symbol = _getCurrencySymbol(currency);
+
+    if (amount >= 1e9) {
+      return '$symbol${_compact(amount / 1e9)}B';
+    } else if (amount >= 1e6) {
+      return '$symbol${_compact(amount / 1e6)}M';
+    } else if (amount >= 1e3) {
+      return '$symbol${_compact(amount / 1e3)}K';
+    }
+
+    final format = NumberFormat.currency(symbol: symbol, decimalDigits: 2);
+
     return format.format(amount);
+  }
+
+  static String _compact(double value) {
+    return value.toStringAsFixed(1).replaceAll('.0', '');
   }
 
   static String formatDateTime(
@@ -52,8 +64,10 @@ class AppUtils {
         return '\$';
       case 'CAD':
         return '\$';
+      case 'MMK':
+        return 'Ks';
       default:
-        return '\$';
+        return '';
     }
   }
 

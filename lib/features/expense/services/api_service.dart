@@ -4,7 +4,6 @@ import '../../../core/utils/environment.dart';
 
 class ApiService {
   final Dio _dio;
-  String? _token;
 
   ApiService() : _dio = Dio() {
     _dio.options = BaseOptions(
@@ -99,7 +98,7 @@ class ApiService {
         '/expenses',
         queryParameters: queryParams,
       );
-      return List<Map<String, dynamic>>.from(response.data['expenses']);
+      return List<Map<String, dynamic>>.from(response.data);
     } on DioException catch (e) {
       throw _handleDioError(e);
     }

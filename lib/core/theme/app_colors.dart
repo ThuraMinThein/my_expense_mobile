@@ -20,14 +20,14 @@ class AppColors {
   static const warning = Color(0xFFFF9800);
   static const success = Color(0xFF4CAF50);
 
-  static const categoryColors = {
-    "Food": Color(0xFFFF7043), // Food - Orange
-    "Transport": Color(0xFF42A5F5), // Transport - Blue
-    "Shopping": Color(0xFFAB47BC), // Shopping - Purple
-    "Entertainment": Color(0xFF66BB6A), // Entertainment - Green
-    "Health": Color(0xFFEC407A), // Health - Pink
-    "Education": Color(0xFFFFA726), // Education - Amber
-    "Bills": Color(0xFF78909C), // Bills - Blue Grey
-    "Other": Color(0xFF8D6E63), // Other - Brown
-  };
+  static const categoryColors = [
+    Color(0xFFFF7043), // Food - Orange
+    Color(0xFF42A5F5), // Transport - Blue
+    Color(0xFFAB47BC), // Shopping - Purple
+    Color(0xFF66BB6A), // Entertainment - Green
+    Color(0xFFEC407A), // Health - Pink
+    Color(0xFFFFA726), // Education - Amber
+    Color(0xFF78909C), // Bills - Blue Grey
+    Color(0xFF8D6E63), // Other - Brown
+  ];
 }

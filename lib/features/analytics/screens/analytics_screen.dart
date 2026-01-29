@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:my_expense_mobile/core/providers/app_providers.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/common_widgets.dart';
@@ -34,6 +35,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
 
   @override
   Widget build(BuildContext context) {
+    final currency = ref.watch(currencyProvider);
     final summaryAsync = ref.watch(
       filteredExpenseSummaryProvider(_selectedPeriod),
     );
@@ -82,7 +84,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
                     Expanded(
                       child: _buildSummaryCard(
                         'Total',
-                        AppUtils.formatAmount(summary.total),
+                        AppUtils.formatAmount(summary.total, currency),
                         Icons.monetization_on,
                         AppColors.primary,
                       ),
@@ -91,7 +93,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
                     Expanded(
                       child: _buildSummaryCard(
                         'Average',
-                        AppUtils.formatAmount(summary.average),
+                        AppUtils.formatAmount(summary.average, currency),
                         Icons.trending_up,
                         AppColors.textSecondary,
                       ),
@@ -222,6 +224,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
   }
 
   Widget _buildCategoryBreakdown(Map<String, double> categoryTotals) {
+    final currency = ref.watch(currencyProvider);
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,12 +235,10 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
           ),
           const SizedBox(height: 16),
           ...categoryTotals.entries.map((entry) {
-            // final categoryIndex = AppConstants.expenseCategories.indexOf(
-            //   entry.key,
-            // );
-            final color =
-                AppColors.categoryColors[entry.key] ??
-                AppColors.categoryColors["Other"];
+            final categoryIndex = AppConstants.expenseCategories.indexOf(
+              entry.key,
+            );
+            final color = AppColors.categoryColors[categoryIndex];
             final percentage = categoryTotals.values.isNotEmpty
                 ? (entry.value /
                       categoryTotals.values.reduce((a, b) => a + b) *
@@ -253,7 +254,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: color?.withOpacity(0.1),
+                      color: color.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(
@@ -285,7 +286,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
 
                   // Amount
                   Text(
-                    AppUtils.formatAmount(entry.value),
+                    AppUtils.formatAmount(entry.value, currency),
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),

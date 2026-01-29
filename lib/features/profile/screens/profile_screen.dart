@@ -44,7 +44,7 @@ class ProfileScreen extends ConsumerWidget {
                     radius: 40,
                     backgroundColor: AppColors.primary,
                     child: Text(
-                      AppUtils.getInitials(user!.name),
+                      AppUtils.getInitials(user.name),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -96,7 +96,7 @@ class ProfileScreen extends ConsumerWidget {
                     Expanded(
                       child: _buildStat(
                         'Total Spent',
-                        AppUtils.formatAmount(summary.total),
+                        AppUtils.formatAmount(summary.total, currency),
                         Icons.monetization_on,
                       ),
                     ),

@@ -313,16 +313,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Text(
-                  currency,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Text(
                   AppUtils.formatAmount(
                     double.tryParse(_amount) ?? 0.0,
+                    currency,
                   ).replaceAll(currency, '').trim(),
                   style: Theme.of(context).textTheme.displayLarge?.copyWith(
                     color: AppColors.primary,
@@ -330,6 +323,14 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                     fontSize: 48,
                   ),
                 ),
+                // const SizedBox(width: 4),
+                // Text(
+                //   currency,
+                //   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                //     color: AppColors.textSecondary,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
               ],
             ),
           ],

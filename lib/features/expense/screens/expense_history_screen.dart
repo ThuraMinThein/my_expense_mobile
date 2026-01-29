@@ -83,12 +83,12 @@ class _ExpenseHistoryScreenState extends ConsumerState<ExpenseHistoryScreen>
   }
 
   Widget _buildExpenseCard(Expense expense) {
-    // final categoryIndex = AppConstants.expenseCategories.indexOf(
-    //   expense.category,
-    // );
-    final categoryColor =
-        AppColors.categoryColors[expense.category] ??
-        AppColors.categoryColors["Other"];
+    final categoryIndex = AppConstants.expenseCategories.indexOf(
+      expense.category,
+    );
+    final categoryColor = (categoryIndex >= 0)
+        ? AppColors.categoryColors[categoryIndex]
+        : AppColors.categoryColors[7]; // fallback color
 
     return AppCard(
       margin: const EdgeInsets.only(bottom: 12),
@@ -99,7 +99,7 @@ class _ExpenseHistoryScreenState extends ConsumerState<ExpenseHistoryScreen>
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: categoryColor?.withOpacity(0.1),
+              color: categoryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
@@ -144,7 +144,7 @@ class _ExpenseHistoryScreenState extends ConsumerState<ExpenseHistoryScreen>
 
           // Amount
           Text(
-            AppUtils.formatAmount(expense.amount, currency: expense.currency),
+            AppUtils.formatAmount(expense.amount, expense.currency),
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
