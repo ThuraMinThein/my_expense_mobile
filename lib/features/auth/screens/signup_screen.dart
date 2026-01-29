@@ -124,14 +124,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Sign Up'),
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back),
+      //     onPressed: () => context.pop(),
+      //   ),
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: AppConstants.defaultPadding,

@@ -34,7 +34,9 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
 
   @override
   Widget build(BuildContext context) {
-    final summaryAsync = ref.watch(filteredExpenseSummaryProvider(_selectedPeriod));
+    final summaryAsync = ref.watch(
+      filteredExpenseSummaryProvider(_selectedPeriod),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -177,7 +179,9 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
         minX: 0,
         maxX: (summary.dailyTotals.length - 1).toDouble(),
         minY: 0,
-        maxY: summary.total * 1.2, // This might be too high if total is sum of all, better use max daily amount
+        maxY:
+            summary.total *
+            1.2, // This might be too high if total is sum of all, better use max daily amount
 
         lineBarsData: [
           LineChartBarData(
@@ -198,23 +202,22 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
   }
 
   List<FlSpot> _getSpots(ExpenseSummary summary) {
-    final sortedDates = summary.dailyTotals.keys.toList()
-      ..sort();
-    
+    final sortedDates = summary.dailyTotals.keys.toList()..sort();
+
     if (sortedDates.isEmpty) return const [];
 
     final spots = <FlSpot>[];
-    
+
     // For daily view, show last 7 days or just the available days
     // This logic might need refinement based on exact requirements for "Weekly/Monthly" tabs
     // For now, mapping the sorted dates to X axis 0..N
-    
+
     for (int i = 0; i < sortedDates.length; i++) {
       final date = sortedDates[i];
       final amount = summary.dailyTotals[date] ?? 0.0;
       spots.add(FlSpot(i.toDouble(), amount));
     }
-    
+
     return spots;
   }
 
@@ -229,10 +232,12 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
           ),
           const SizedBox(height: 16),
           ...categoryTotals.entries.map((entry) {
-            final categoryIndex = AppConstants.expenseCategories.indexOf(
-              entry.key,
-            );
-            final color = AppColors.categoryColors[categoryIndex];
+            // final categoryIndex = AppConstants.expenseCategories.indexOf(
+            //   entry.key,
+            // );
+            final color =
+                AppColors.categoryColors[entry.key] ??
+                AppColors.categoryColors["Other"];
             final percentage = categoryTotals.values.isNotEmpty
                 ? (entry.value /
                       categoryTotals.values.reduce((a, b) => a + b) *
@@ -248,7 +253,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.1),
+                      color: color?.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Icon(

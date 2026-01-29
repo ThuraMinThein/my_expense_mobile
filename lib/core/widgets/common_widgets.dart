@@ -199,8 +199,8 @@ class CategoryChip extends StatelessWidget {
       label: Text(category),
       selected: isSelected,
       onSelected: (selected) => onSelected(category),
-      backgroundColor: color.withOpacity(0.1),
-      selectedColor: color.withOpacity(0.3),
+      backgroundColor: color?.withOpacity(0.1),
+      selectedColor: color?.withOpacity(0.3),
       checkmarkColor: color,
       labelStyle: TextStyle(
         color: isSelected ? color : AppColors.textPrimary,
@@ -209,7 +209,7 @@ class CategoryChip extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: isSelected ? color : AppColors.border,
+          color: isSelected ? color! : AppColors.border,
           width: 1,
         ),
       ),
